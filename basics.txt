@@ -1,0 +1,23 @@
+JavaScript Features
+
+1. difference between JS and Java is 
+    (1) we don't have class in JS, functions are the highest priority citizenship
+    (2) JS doesn't have overloadding , just overriding
+
+2. closure: inner function can remember and use variables from outer functions, So we can use closures to achieve encapsulation
+
+3. currying: return a function in another function, and hange the function that originally accepted multiple parameters to a "function chain" 
+that only accepts one parameter at a time. The meaning is to improve function reusability and flexibility.
+
+4. hoisting: Variable and function declarations can be hoisted to the top of the scope during the JS compilation phase. 
+    But only hoisting, no value assigned.
+
+5. callback: a function can become a parameter of another function. Again, the meaning is to improve function reusability and flexibility.
+
+6. call, apply, and bind
+    they are all methods of the Function prototype object, which means every functions can use them.
+    their meaning is to manually specify the direction of "this"
+    the difference are 
+        (1) call always used in the condition of normal parameters
+        (2) apply used in array parameters
+        (3) bind returns a new function and bind "this" with something all the time
