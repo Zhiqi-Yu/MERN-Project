@@ -1,3 +1,4 @@
+//Shorthand : Removes the redundant variable, name used as key
 let lion = "roar", birds = "chirp", cow = "moo", dogs = "bark"; 
 
 let animalSound = {
