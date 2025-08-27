@@ -16,7 +16,17 @@ let NameComponent = (props) =>{
                 
                 <p>this is a functional component.</p>
                 <p>Component ID: {props.id + 1}</p>
+
+                <p>{props.address.firstLine}</p>
+                <p>{props.address.secondLine}</p>
+                <p>{props.address.city}</p>
+                <p>{props.address.state}</p>
             </div>
+
+            {/* <button onClick={props.startTimer}>startTimer</button> */}
+            
+            <button onClick={() => props.startTimer(5)}>startTimer</button>
+            
         </>
         
 

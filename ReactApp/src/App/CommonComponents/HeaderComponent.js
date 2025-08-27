@@ -3,10 +3,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 let Header = (props)=>{
     //navigate hook is used to create navigation link on the fly and send the request to given component
-    // const navigateHook = useNavigate();
-    // const navigateWithName = ()=>{
-    //    navigateHook("/about/5000/Robin")
-    // }
+    const navigateHook = useNavigate();
+    const navigateWithName = ()=>{
+       navigateHook("/about/5000/zhangsan")
+    }
 
     return(
         <>
@@ -21,7 +21,7 @@ let Header = (props)=>{
                 <NavLink to="/about"  className="button" activeclassname="true"> About </NavLink>               
             </div>
 
-            {/* <button onClick={navigateWithName} >About With Name</button> */}
+            <button onClick={navigateWithName} >About With Name</button>
         </>
     )
 }

@@ -28,7 +28,7 @@ export default class Application extends React.Component{
                             <Route path="/" element={<Navigate to="/home" />} />
                             <Route path="/home" element={<HomeComponent />} />
                             <Route path="/about" element={<About />} />
-                            {/* <Route path="/about/:id/:name" element={<About />} />  */}
+                            <Route path="/about/:id/:name" element={<About />} /> 
                             <Route path="*" element={<NotFoundComponent />} />
                             {/* <HomeComponent />  
                             <About /> */}

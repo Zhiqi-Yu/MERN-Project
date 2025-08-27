@@ -3,22 +3,22 @@ import { useParams, useNavigate } from "react-router-dom";
 
 //a functional component using arrow function
 let About = (props)=>{
-    // let params = useParams(); //initialized to be used to read the route param values
-    // let param = params && params["id"] ? params["id"]: 0; 
-    // let name = params && params["name"] ? params["name"]: "No Name"; 
+    let params = useParams(); //initialized to be used to read the route param values
+    let param = params && params["id"] ? params["id"]: 0; 
+    let name = params && params["name"] ? params["name"]: "No Name"; 
 
     // // //using functional hook - useState is replacement of setState and state
-    // let [userName, setUserName] = useState("Ryan!")
+    let [userName, setUserName] = useState("Ryan!")
 
     // // //first hook that we are using in application
-    // let goToHome = useNavigate(); //helps to create route table on the fly and intercepted by BrowserRouter
+    let goToHome = useNavigate(); //helps to create route table on the fly and intercepted by BrowserRouter
 
-    // let onGoToHomeClick = (evt)=>{
-    //     //goToHome("/Login");
+    let onGoToHomeClick = (evt)=>{
+        // goToHome("/Login");
         
-    //     setUserName("Himavan!!") //this will update the userName and re-render the about component
-    //     evt.preventDefault();//it stops the default behaviour like event propagation
-    // }
+        setUserName("Himavan!!") //this will update the userName and re-render the about component
+        evt.preventDefault();//it stops the default behaviour like event propagation
+    }
 
     return(
         <div className="about" >  
@@ -29,7 +29,7 @@ let About = (props)=>{
                     Let us introduce you. No matter where you are,  
                     we can help you get where you want to go in your career.  
                 </p>
-                {/* <p>id = {param}</p>
+                <p>id = {param}</p>
                 <p>Sum of Params = {parseInt(param) + parseInt(param)}</p>
                 <p>Multiple of Params = {parseInt(param) * parseInt(param)}</p>
 
@@ -39,7 +39,7 @@ let About = (props)=>{
                         onClick={onGoToHomeClick} 
                         >Go To Home</button>
 
-                <h4>{userName}</h4> */}
+                <h4>{userName}</h4>
         </div>
     )
 }
