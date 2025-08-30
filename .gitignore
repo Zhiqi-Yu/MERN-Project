@@ -1,1 +1,4 @@
-/NodeAPI/node_modules/
+**/node_modules/
+**/dist/
+/react_staging/
+.DS_Store
