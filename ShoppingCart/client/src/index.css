@@ -1,0 +1,85 @@
+/* client/src/index.css  —— super simple demo styles */
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, "Noto Sans", "PingFang SC", sans-serif;
+  background: #f4f6f8;          /* 淡灰背景 */
+  color: #111;
+}
+
+#root > div {
+  max-width: 900px;              /* 页面宽度 */
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+h2 { margin: 0 0 24px; }
+h3 { margin: 0 0 12px; }
+
+/* 白色方框卡片：给表单和列表用 */
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+/* 表单：两列布局（左标题右输入框） */
+form {
+  display: grid;
+  gap: 12px;
+}
+form label {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: center;
+  font-weight: 600;
+}
+input[type="text"], input[type="number"], textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 10px;
+  outline: none;
+  background: #fff;
+}
+textarea { min-height: 90px; resize: vertical; }
+input:focus, textarea:focus { border-color: #3b82f6; }
+
+/* 提交按钮 */
+button[type="submit"] {
+  margin-top: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: #3b82f6;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+button[disabled] { opacity: .7; cursor: not-allowed; }
+
+/* 列表 */
+.products { margin-top: 18px; }
+.products ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: grid;
+  gap: 10px;
+}
+.products li {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+.products li strong { margin-right: 6px; }
+.products li div { color: #666; margin-top: 4px; }
+
+/* 提示 */
+.notice-success { color: #0a7a3e; }
+.notice-error   { color: #b42318; }
