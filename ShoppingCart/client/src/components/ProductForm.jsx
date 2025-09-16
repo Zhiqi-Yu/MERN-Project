@@ -16,7 +16,7 @@ export default function ProductForm() {
       desc: (descRef.current.value || '').trim(),
       rating: Number(ratingRef.current.value || 0)
     };
-    if (!payload.name || Number.isNaN(payload.price)) return alert('请输入有效 name/price');
+    if (!payload.name || Number.isNaN(payload.price)) return alert('Please enter a valid name/price');
     dispatch(addProduct(payload)).then(() => {
       dispatch(listProducts());
       nameRef.current.value = '';
