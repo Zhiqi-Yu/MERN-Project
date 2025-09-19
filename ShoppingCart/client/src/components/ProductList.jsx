@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
+import { addItem } from '../redux/actions/cartActions';
 
 export default function ProductList() {
   const dispatch = useDispatch();
@@ -17,9 +18,16 @@ export default function ProductList() {
       {items.length === 0 ? <p>No products.</p> : (
         <ul>
           {items.map(p => (
-            <li key={p._id}>
-              <strong>{p.name}</strong> — ${Number(p.price).toFixed(2)} | ⭐ {p.rating}
-              <div style={{ color:'#555' }}>{p.desc}</div>
+            <li key={p._id} className="card">
+              <strong>{p.name}</strong> — ${Number(p.price).toFixed(2)} | ⭐ {p.rating} | {p.category}
+              <div style={{ color:'#666' }}>{p.desc}</div>
+              <button onClick={() => dispatch(addItem({
+                productId: p._id,
+                name: p.name,
+                price: p.price,
+                qty: 1,
+                category: p.category || ''
+              }))}>Add To Cart</button>
             </li>
           ))}
         </ul>

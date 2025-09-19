@@ -18,8 +18,10 @@ mongooseObj.connect(MONGO_URI)
 app.get('/', (_req, res) => res.send('API ok'));
 
 app.use('/api/products', require('./routes/productRoutes'));
+app.use('/api/carts', require('./routes/cartRoutes'));
 
-// 简单错误处理
+
+// handle err simply
 app.use((err, req, res, _next) => {
   console.error(err);
   res.status(res.statusCode && res.statusCode !== 200 ? res.statusCode : 500)
