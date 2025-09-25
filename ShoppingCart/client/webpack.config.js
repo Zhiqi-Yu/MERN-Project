@@ -19,6 +19,7 @@ module.exports = {
   plugins: [ new HtmlWebpackPlugin({ template: './public/index.html' }) ],
   devServer: {
     port: 3000,
+    proxy: [{ context: ['/api'], target: 'http://127.0.0.1:9000', changeOrigin: true }],
     historyApiFallback: true,
     // ✅ 用数组写法
     proxy: [

@@ -83,3 +83,10 @@ button[disabled] { opacity: .7; cursor: not-allowed; }
 /* 提示 */
 .notice-success { color: #0a7a3e; }
 .notice-error   { color: #b42318; }
+
+
+
+.table { width: 100%; border-collapse: collapse; }
+.table th, .table td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+.page-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.brand { font-weight: 700; text-decoration: none; color: #111; }

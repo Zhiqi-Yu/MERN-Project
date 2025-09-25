@@ -1,9 +1,11 @@
 // components/Cart.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem, updateItem, checkoutCart } from '../redux/actions/cartActions';
 
 export default function Cart(){
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, checkout } = useSelector(s => s.cart);
   const total = items.reduce((s,i)=> s + i.price * i.qty, 0);
@@ -31,6 +33,14 @@ export default function Cart(){
               style={{marginTop:12}}>
         {checkout.loading ? 'Saving...' : 'Save to Checkout'}
       </button>
+
+      <button
+        disabled={items.length === 0}
+        onClick={() => navigate('/checkout')}             // ★ Jump to the new page
+      >
+        Go to Checkout
+      </button>
+
       {checkout.success && (
         <p className="notice-success">
             {checkout.message} {checkout.lastOrderId ? `(Order #${checkout.lastOrderId})` : ''}
