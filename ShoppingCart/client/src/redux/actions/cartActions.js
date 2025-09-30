@@ -9,19 +9,37 @@ export const updateItem = (productId, qty) => ({ type: UPDATE_ITEM, payload: { p
 export const emptyCart = () => ({ type: EMPTY_CART });
 export const addCoupon = (code) => ({ type: ADD_COUPON, payload: code });
 
+
+// export const checkoutCart = () => async (dispatch, getState) => {
+//   try {
+//     dispatch({ type: CHECKOUT_REQUEST });
+//     const { cart: { items, coupon } } = getState();
+//     const body = { 
+//       items: items.map(i => ({ productId: i.productId, name: i.name, price: i.price, qty: i.qty, category: i.category })),
+//       coupon
+//     };
+//     const { data } = await axios.post('/api/carts', body); // proxy → http://127.0.0.1:9000
+//     dispatch({ type: CHECKOUT_SUCCESS, payload: { ...data, message: 'Checkout successfully!' } });   // {cartId,total,...}
+//     dispatch({ type: EMPTY_CART});
+//   } catch (err) {
+//     const msg = err?.response?.data?.message || err.message || 'Checkout failed';
+//     dispatch({ type: CHECKOUT_FAIL, payload: msg });
+//   }
+// };
+
+// client/src/redux/actions/cartActions.js（checkoutCart 内）
 export const checkoutCart = () => async (dispatch, getState) => {
   try {
     dispatch({ type: CHECKOUT_REQUEST });
-    const { cart: { items, coupon } } = getState();
-    const body = { 
-      items: items.map(i => ({ productId: i.productId, name: i.name, price: i.price, qty: i.qty, category: i.category })),
-      coupon
+    const { cart: { items }, coupon: { value } } = getState();  // ★ 从 coupon 取
+    const body = {
+      items: items.map(i => ({ productId:i.productId, name:i.name, price:i.price, qty:i.qty, category:i.category })),
+      coupon: value || null                                     // ★ 传到后端
     };
-    const { data } = await axios.post('/api/carts', body); // proxy → http://127.0.0.1:9000
-    dispatch({ type: CHECKOUT_SUCCESS, payload: { ...data, message: 'Checkout successfully!' } });   // {cartId,total,...}
-    dispatch({ type: EMPTY_CART});
+    const { data } = await axios.post('/api/carts', body);
+    dispatch({ type: CHECKOUT_SUCCESS, payload: { ...data, message: 'Checkout successfully!' } });
+    dispatch({ type: EMPTY_CART });
   } catch (err) {
-    const msg = err?.response?.data?.message || err.message || 'Checkout failed';
-    dispatch({ type: CHECKOUT_FAIL, payload: msg });
+    dispatch({ type: CHECKOUT_FAIL, payload: err?.response?.data?.message || err.message });
   }
 };
