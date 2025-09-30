@@ -4,6 +4,7 @@ import { productAddReducer, productListReducer } from './reducers/productReducer
 import cartReducer from './reducers/cartReducer';
 import couponReducer from './reducers/couponReducer';          // ★ new
 import userReducer from './reducers/userReducer';               // ★ needed in Part B below
+import ordersReducer from './reducers/orderReducer';
 
 const rootReducer = combineReducers({
   productAdd:  productAddReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   cart:        cartReducer,
   coupon:      couponReducer,     // ★
   user:        userReducer,       // ★
+  orders: ordersReducer, 
 });
 
 export default configureStore({ reducer: rootReducer, devTools: true });

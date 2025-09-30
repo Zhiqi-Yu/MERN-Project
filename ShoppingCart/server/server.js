@@ -19,6 +19,7 @@ app.get('/', (_req, res) => res.send('API ok'));
 
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/carts', require('./routes/cartRoutes'));
+app.use('/api/orders',   require('./routes/orderRoutes'));
 
 
 // handle err simply

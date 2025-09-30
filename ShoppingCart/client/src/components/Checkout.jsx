@@ -1,50 +1,50 @@
-// client/src/components/Checkout.jsx
 import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { emptyCart } from '../redux/actions/cartActions';
 
 export default function Checkout() {
-  // 购物车与结账信息（从 Redux）
+  const dispatch = useDispatch();
+
+  // 购物车、用户、优惠券（都来自 Redux）
   const { items = [], checkout = {} } = useSelector((s) => s.cart || {});
-
-  // 优惠券（仅前端计算，不入库）
+  const { name: userName } = useSelector((s) => s.user || { name: '' });
   const coupon = useSelector((s) => s.coupon || { value: null, percent: 0 });
-  const couponCodeFromStore = coupon.value || null;
-  const couponPercentFromStore = Number(coupon.percent || 0);
 
-  // 本地状态：输入的券码 / 是否已应用 / 错误提示
+  // 券码相关本地态
   const [couponInput, setCouponInput] = useState('');
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
 
-  // 用户信息（按作业要求只是本地展示，不写库）
+  // 用户收货信息（作业第二部分只做展示，不落库）
   const [user, setUser] = useState({ name: '', address: '' });
 
-  // “支付完成”页状态（作业第二部分）
+  // 支付完成态
   const [paid, setPaid] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
   const fmt = (n) => `$${Number(n || 0).toFixed(2)}`;
 
-  // 小计 → 折扣 → 合计（前端即时计算；只有“已应用”后才打折）
+  // 计算价格（只有已应用券码才打折；折扣仅前端计算）
   const summary = useMemo(() => {
     const qty = items.reduce((s, i) => s + Number(i.qty || 0), 0);
     const subtotal = items.reduce(
       (s, i) => s + Number(i.qty || 0) * Number(i.price || 0),
       0
     );
-    const effectivePercent = couponApplied ? couponPercentFromStore : 0;
+    const effectivePercent = couponApplied ? Number(coupon.percent || 0) : 0;
     const discount = +(subtotal * (effectivePercent / 100)).toFixed(2);
     const total = +(subtotal - discount).toFixed(2);
     return { qty, subtotal, discount, total, effectivePercent };
-  }, [items, couponApplied, couponPercentFromStore]);
+  }, [items, couponApplied, coupon.percent]);
 
-  // 点击“应用券码”
   const applyCoupon = () => {
-    if (!couponCodeFromStore) {
+    if (!coupon.value) {
       setCouponError('No coupon generated yet. Go to Coupon page to generate one.');
       return;
     }
-    if (couponInput.trim() !== String(couponCodeFromStore)) {
+    if (couponInput.trim() !== String(coupon.value)) {
       setCouponError('Invalid coupon code.');
       return;
     }
@@ -52,26 +52,49 @@ export default function Checkout() {
     setCouponError('');
   };
 
-  // 支付完成态页面
+  // 点击“支付”：调用 /api/orders 写入订单 → 清空购物车 → 切到完成页
+  const handlePayment = async () => {
+    try {
+      const body = {
+        userId: userName || 'guest',
+        items: items.map((i) => ({
+          productId: i.productId || i.product || undefined,
+          name: i.name,
+          price: i.price,
+          qty: i.qty,
+          category: i.category || '',
+        })),
+        total: summary.total, // 后端仍会重算
+      };
+      const { data } = await axios.post('/api/orders', body);
+      setOrderId(data?.orderId || null);
+
+      dispatch(emptyCart());
+      setPaid(true);
+    } catch (e) {
+      alert(e?.response?.data?.message || e.message || 'Payment failed');
+    }
+  };
+
+  // 支付完成页
   if (paid) {
     return (
       <div className="card" style={{ maxWidth: 780, margin: '0 auto' }}>
         <h2>Payment</h2>
         <p>Thank you for the payment, your items under process!</p>
-        {!!checkout?.lastOrderId && (
-          <p style={{ marginTop: 4 }}>Order #{checkout.lastOrderId}</p>
-        )}
+        {orderId && <p style={{ marginTop: 4 }}>Order #{orderId}</p>}
         <p style={{ marginTop: 4 }}>
           Paid Total: <strong>{fmt(summary.total)}</strong>
-          {summary.effectivePercent > 0 && (
+          {couponApplied && coupon.value && (
             <span style={{ color: '#666', marginLeft: 8 }}>
-              (Coupon{couponCodeFromStore ? ` #${couponCodeFromStore}` : ''},{' '}
-              {summary.effectivePercent}% off)
+              (Coupon #{coupon.value}, {summary.effectivePercent}% off)
             </span>
           )}
         </p>
         <div style={{ marginTop: 12 }}>
           <Link to="/">← Back to Home</Link>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <Link to="/orders">View Recent Orders</Link>
         </div>
       </div>
     );
@@ -95,7 +118,7 @@ export default function Checkout() {
       <h2>Checkout</h2>
       <p>We will deliver products to the address below.</p>
 
-      {/* 用户信息（本地态） */}
+      {/* 用户信息（仅本地显示） */}
       <div style={{ display: 'grid', gap: 8, maxWidth: 520 }}>
         <label>
           Name
@@ -116,7 +139,7 @@ export default function Checkout() {
         </label>
       </div>
 
-      {/* 购物车表格 */}
+      {/* 清单表格 */}
       <div style={{ marginTop: 16 }}>
         <table className="table" style={{ width: '100%' }}>
           <thead>
@@ -141,9 +164,7 @@ export default function Checkout() {
           </tbody>
           <tfoot>
             <tr>
-              <td colSpan={3} style={{ textAlign: 'right' }}>
-                Subtotal
-              </td>
+              <td colSpan={3} style={{ textAlign: 'right' }}>Subtotal</td>
               <td style={{ textAlign: 'right' }}>{fmt(summary.subtotal)}</td>
             </tr>
             <tr>
@@ -151,15 +172,11 @@ export default function Checkout() {
                 Discount{' '}
                 {summary.effectivePercent > 0
                   ? `(${summary.effectivePercent}%${
-                      couponApplied && couponCodeFromStore
-                        ? `, code ${couponCodeFromStore}`
-                        : ''
+                      couponApplied && coupon.value ? `, code ${coupon.value}` : ''
                     })`
                   : ''}
               </td>
-              <td style={{ textAlign: 'right' }}>
-                −{fmt(summary.discount)}
-              </td>
+              <td style={{ textAlign: 'right' }}>−{fmt(summary.discount)}</td>
             </tr>
             <tr>
               <td colSpan={3} style={{ textAlign: 'right' }}>
@@ -202,7 +219,7 @@ export default function Checkout() {
 
       {/* 操作按钮 */}
       <div style={{ marginTop: 12, display: 'flex', gap: 12 }}>
-        <button onClick={() => setPaid(true)}>Proceed to Payment</button>
+        <button onClick={handlePayment}>Proceed to Payment</button>
         <Link to="/">Cancel</Link>
       </div>
     </div>
