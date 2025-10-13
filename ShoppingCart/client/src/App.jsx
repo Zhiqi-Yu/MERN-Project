@@ -10,6 +10,8 @@ import Checkout from './components/Checkout';
 import CouponComponent from './components/CouponComponent';
 import RecentOrders from './components/RecentOrders';
 import UserPage from './components/UserPage';
+import Payment from './components/Payment';
+
 
 export default function App() {
   const { isLoggedIn, name } = useSelector((s) => s.user || {});
@@ -68,6 +70,9 @@ export default function App() {
 
           {/* 用户登录页 */}
           <Route path="/user" element={<UserPage />} />
+
+          {/* 支付页面 */}
+          <Route path="/payment/:id" element={<Payment />} />
 
           {/* 兜底：回首页 */}
           <Route path="*" element={<div className="card">Not Found. <Link to="/">Go Home</Link></div>} />

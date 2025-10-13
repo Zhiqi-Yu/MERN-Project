@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { emptyCart } from '../redux/actions/cartActions';
 
 export default function Checkout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // 购物车、用户、优惠券（都来自 Redux）
   const { items = [], checkout = {} } = useSelector((s) => s.cart || {});
@@ -39,6 +40,11 @@ export default function Checkout() {
     return { qty, subtotal, discount, total, effectivePercent };
   }, [items, couponApplied, coupon.percent]);
 
+  // 把优惠券带给后端
+  const { value: couponCode = null, percent: couponPercent = 0 } =
+  useSelector(s => s.coupon || {});
+
+
   const applyCoupon = () => {
     if (!coupon.value) {
       setCouponError('No coupon generated yet. Go to Coupon page to generate one.');
@@ -64,13 +70,17 @@ export default function Checkout() {
           qty: i.qty,
           category: i.category || '',
         })),
-        total: summary.total, // 后端仍会重算
+        // total: summary.total, // 后端仍会重算
+        couponCode,
+        couponPercent,
       };
       const { data } = await axios.post('/api/orders', body);
-      setOrderId(data?.orderId || null);
+      // setOrderId(data?.orderId || null);
+      // setPaid(true);
 
       dispatch(emptyCart());
-      setPaid(true);
+      navigate(`/payment/${data.orderId}`); // 跳去独立成功页
+      
     } catch (e) {
       alert(e?.response?.data?.message || e.message || 'Payment failed');
     }
