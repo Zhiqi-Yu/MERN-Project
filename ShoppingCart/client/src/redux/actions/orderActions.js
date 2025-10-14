@@ -3,6 +3,7 @@ import {
   ORDERS_LIST_REQUEST, ORDERS_LIST_SUCCESS, ORDERS_LIST_FAIL,
   ORDERS_CANCEL_REQUEST, ORDERS_CANCEL_SUCCESS, ORDERS_CANCEL_FAIL,
 } from '../constants/orderConstants';
+import { pushNotification } from './notificationActions'; 
 
 // 拉取我的订单
 export const fetchMyOrders = (userId) => async (dispatch) => {
@@ -21,6 +22,12 @@ export const cancelOrder = (orderId) => async (dispatch) => {
     dispatch({ type: ORDERS_CANCEL_REQUEST, payload: orderId });
     await axios.patch(`/api/orders/${orderId}/cancel`);
     dispatch({ type: ORDERS_CANCEL_SUCCESS, payload: orderId });
+    // ✅ 动态通知
+    dispatch(pushNotification({
+      type: 'dynamic',
+      message: `Order ${orderId} has been cancelled`,
+      link: '/orders',
+    }));
   } catch (err) {
     dispatch({ type: ORDERS_CANCEL_FAIL, payload: err?.response?.data?.message || err.message });
   }

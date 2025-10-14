@@ -3,12 +3,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeItem, updateItem, checkoutCart } from '../redux/actions/cartActions';
+import useStaticHint from '../hooks/useStaticHint';
+
 
 export default function Cart(){
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, checkout } = useSelector(s => s.cart);
   const total = items.reduce((s,i)=> s + i.price * i.qty, 0);
+
+  // hooks
+  useStaticHint('HINT_CART', 'Tip: Add items from the Cart page', '/cart');
 
   return (
     <div className="card" style={{ marginTop:16 }}>

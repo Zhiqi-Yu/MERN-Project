@@ -1,12 +1,17 @@
 // Payment.jsx
 import React, { useEffect, useState } from 'react';   // ← 必须有 React 默认导入
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
+import useStaticHint from '../hooks/useStaticHint';
 
 export default function Payment() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [err, setErr] = useState(null);
+
+  // hooks
+  const location = useLocation();
+  useStaticHint('HINT_PAYMENT', 'Tip: Make payment from the Payment page', location.pathname);
 
   useEffect(() => {
     (async () => {

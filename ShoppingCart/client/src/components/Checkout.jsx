@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { emptyCart } from '../redux/actions/cartActions';
+import useStaticHint from '../hooks/useStaticHint';
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -44,6 +45,8 @@ export default function Checkout() {
   const { value: couponCode = null, percent: couponPercent = 0 } =
   useSelector(s => s.coupon || {});
 
+  // hooks
+  useStaticHint('HINT_CHECKOUT', 'Tip: Review your cart in Checkout', '/checkout');
 
   const applyCoupon = () => {
     if (!coupon.value) {

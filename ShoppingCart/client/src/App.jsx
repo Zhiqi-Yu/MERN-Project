@@ -11,9 +11,13 @@ import CouponComponent from './components/CouponComponent';
 import RecentOrders from './components/RecentOrders';
 import UserPage from './components/UserPage';
 import Payment from './components/Payment';
+import NotificationBell from './components/NotificationBell';
+import useCartCountNotice from './hooks/useCartCountNotice';
+
 
 
 export default function App() {
+  useCartCountNotice();
   const { isLoggedIn, name } = useSelector((s) => s.user || {});
 
   const AdminOnlyBox = () => (
@@ -33,7 +37,7 @@ export default function App() {
     <div className="page">
       <header className="page-header">
         <Link to="/" className="brand">Shopping Cart — Products</Link>
-        <nav style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap' }}> 
+        <nav style={{ display: 'flex', gap: 14, alignItems: 'center', flexWrap: 'wrap', marginLeft:16 }}> 
           {/* 未登录只显示 Home / User */}
           <Link to="/">Home</Link>
           <Link to="/user">User</Link>
@@ -43,6 +47,11 @@ export default function App() {
           {isLoggedIn && <Link to="/coupon">Coupon</Link>}
           {isLoggedIn && <Link to="/orders">Orders</Link>}
         </nav>
+
+        {/* 右上角铃铛🔔 */}
+        <div style={{ marginLeft:'auto' }}>
+          <NotificationBell />
+        </div>
       </header>
 
       <main className="page-main">

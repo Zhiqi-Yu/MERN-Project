@@ -60,6 +60,7 @@ router.post('/', async (req, res, next) => {
 // GET /api/orders?userId=xxx  我的订单列表
 router.get('/', async (req, res, next) => {
   try {
+    const cancellableStatuses = ['PLACED', 'PAID'];
     const { userId } = req.query;
     const filter = userId ? { userId } : {};
     const list = await RecentOrder.find(filter).sort({ createdAt: -1 }).lean();
@@ -68,11 +69,11 @@ router.get('/', async (req, res, next) => {
     const withFlags = list.map(o => {
       const ageMs = now - new Date(o.createdAt).getTime();
       const within48h = ageMs <= 48 * 3600 * 1000;
-      const isCancelable = o.status === 'PLACED' && within48h;
+      const isCancelable = cancellableStatuses.includes(o.status) && within48h;
       // 计算型 delivered（不强制落库，演示足够）
       const computedStatus = isCancelable
         ? o.status
-        : (o.status === 'PLACED' ? 'DELIVERED' : o.status);
+        : (cancellableStatuses.includes(o.status) ? 'DELIVERED' : o.status);
       return { ...o, isCancelable, computedStatus };
     });
 
@@ -83,10 +84,11 @@ router.get('/', async (req, res, next) => {
 // PATCH /api/orders/:id/cancel  取消订单（48h内）
 router.patch('/:id/cancel', async (req, res, next) => {
   try {
+    const cancellableStatuses = ['PLACED', 'PAID'];
     const id = req.params.id;
     const o = await RecentOrder.findById(id);
     if (!o) return res.status(404).json({ message: 'Order not found' });
-    if (o.status !== 'PLACED') {
+    if (!cancellableStatuses.includes(o.status)) {
       return res.status(409).json({ message: 'Order not cancellable' });
     }
     const ageMs = Date.now() - o.createdAt.getTime();

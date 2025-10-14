@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMyOrders, cancelOrder } from '../redux/actions/orderActions';
 import { addItem, emptyCart } from '../redux/actions/cartActions';
+import useStaticHint from '../hooks/useStaticHint';
 
 /** =============== 轻量 Review 弹窗（内置） =============== */
 function ReviewModal({ show, onClose, orderId, product, userId, onSubmitted }) {
@@ -78,6 +79,9 @@ export default function RecentOrders() {
   // 评价弹窗态
   const [showModal, setShowModal] = useState(false);
   const [modalCtx, setModalCtx] = useState({ orderId: null, product: null });
+
+  // hooks
+  useStaticHint('HINT_ORDERS', 'Tip: You can cancel an order or reorder it', '/orders');
 
   // 拉我的订单列表
   useEffect(() => {

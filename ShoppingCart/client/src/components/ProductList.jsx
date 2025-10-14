@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { listProducts } from '../redux/actions/productActions';
 import { addItem } from '../redux/actions/cartActions';
 import ReviewsViewer from './ReviewsViewer';
+import useStaticHint from '../hooks/useStaticHint';
 
 export default function ProductList() {
   const dispatch = useDispatch();
@@ -12,6 +13,8 @@ export default function ProductList() {
   const [rvProduct, setRvProduct] = useState({ id: null, name: '' });
 
   useEffect(() => { dispatch(listProducts()); }, [dispatch]);
+  // hooks
+  useStaticHint('HINT_PRODUCTS', 'Tip: Add products from the product screen', '/');
 
 
   const openReviews = (p) => {
