@@ -1,28 +1,26 @@
 import React from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
+import SearchPage from "./components/pages/SearchPage.jsx";
+import HospitalDetailPage from "./components/pages/HospitalDetailPage.jsx";
+import BookingPage from "./components/pages/BookingPage.jsx";
+import SchedulePage from "./components/pages/SchedulePage.jsx";
 
-const Page = ({ title }) => <h2>{title}</h2>;
-
-export default function App() {
+export default function App(){
   return (
     <>
-      <nav>
+      <nav style={{display:"flex", gap:12, padding:12, borderBottom:"1px solid #eee"}}>
         <Link to="/search">Search</Link>
-        <Link to="/register">Register</Link>
         <Link to="/my/schedule">My Schedule</Link>
         <Link to="/reports">Reports</Link>
         <Link to="/admin">Admin</Link>
       </nav>
-      <main>
+      <main style={{padding:16}}>
         <Routes>
           <Route path="/" element={<Navigate to="/search" />} />
-          <Route path="/search" element={<Page title="Search Vaccines / Hospitals" />} />
-          <Route path="/hospital/:id" element={<Page title="Hospital Detail" />} />
-          <Route path="/register" element={<Page title="User Registration" />} />
-          <Route path="/book/:hospitalId/:vaccineId" element={<Page title="Booking & Payment" />} />
-          <Route path="/my/schedule" element={<Page title="My Schedule" />} />
-          <Route path="/reports" element={<Page title="Reports & Watchlist" />} />
-          <Route path="/admin" element={<Page title="Admin Dashboard" />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/hospital/:id" element={<HospitalDetailPage />} />
+          <Route path="/book/:hospitalId/:vaccineId" element={<BookingPage />} />
+          <Route path="/my/schedule" element={<SchedulePage />} />
         </Routes>
       </main>
     </>
