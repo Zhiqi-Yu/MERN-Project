@@ -72,7 +72,7 @@ export default function BookingPage() {
       </form>
 
       {error && <p style={{color:"red"}}>{String(error)}</p>}
-      <p style={{marginTop:8,opacity:.7}}>（v1 简化：点击即视为支付成功，仅创建预约记录）</p>
+      <p style={{marginTop:8,opacity:.7}}>(v1 simplified: one click is considered payment successful, and only the reservation record is created)</p>
     </div>
   );
 }

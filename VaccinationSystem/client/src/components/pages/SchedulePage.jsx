@@ -4,9 +4,10 @@ import { listAppointments } from "../../redux/actions/appointmentActions";
 
 export default function SchedulePage() {
   const dispatch = useDispatch();
+  const current = useSelector(s => s.currentUser?.user || null);
   const { loading, items = [], error } = useSelector(s => s.appointmentList || {});
 
-  useEffect(() => { dispatch(listAppointments()); }, [dispatch]);
+  useEffect(() => { dispatch(listAppointments(current?._id)); }, [dispatch, current?._id]);
 
   const now = Date.now();
   const future = useMemo(() => items.filter(a => new Date(a.scheduledAt).getTime() > now), [items]);
@@ -25,7 +26,7 @@ export default function SchedulePage() {
             #{a._id.slice(-6)} · {new Date(a.scheduledAt).toLocaleString()} · status: {a.status}
           </li>
         ))}
-        {future.length === 0 && <li>暂无</li>}
+        {future.length === 0 && <li>No Upcoming Vaccine Schedule.</li>}
       </ul>
 
       <h3>History</h3>
@@ -35,7 +36,7 @@ export default function SchedulePage() {
             #{a._id.slice(-6)} · {new Date(a.scheduledAt).toLocaleString()} · status: {a.status}
           </li>
         ))}
-        {past.length === 0 && <li>暂无</li>}
+        {past.length === 0 && <li>No Vaccine Schedule History.</li>}
       </ul>
     </div>
   );

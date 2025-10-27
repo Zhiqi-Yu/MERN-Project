@@ -1,21 +1,33 @@
 const express = require("express");
-const router = express.Router();
+const mongoose = require("mongoose");
 const Appointment = require("../models/Appointment");
+const router = express.Router();
 
-// 创建预约
-// POST /api/appointments   body: { hospitalId, vaccineId, scheduledAt }
+// POST /api/appointments
 router.post("/", async (req, res) => {
-  const { hospitalId, vaccineId, scheduledAt } = req.body || {};
+  const { hospitalId, vaccineId, scheduledAt, userId } = req.body || {};
   if (!hospitalId || !vaccineId || !scheduledAt) {
     return res.status(400).json({ error: "hospitalId, vaccineId, scheduledAt are required" });
   }
-  const doc = await Appointment.create({ hospitalId, vaccineId, scheduledAt });
+
+  const payload = { hospitalId, vaccineId, scheduledAt };
+  // 只有是合法 ObjectId 才写入 userId（否则省略）
+  if (userId && mongoose.isValidObjectId(userId)) {
+    payload.userId = userId;
+  }
+
+  const doc = await Appointment.create(payload);
   res.status(201).json(doc);
 });
 
-// 我的预约列表（先不鉴权，全部列出，之后再按 userId 过滤）
+// GET /api/appointments?userId=
 router.get("/", async (req, res) => {
-  const list = await Appointment.find().sort({ createdAt: -1 }).lean();
+  const { userId } = req.query;
+  const where = {};
+  if (userId && mongoose.isValidObjectId(userId)) {
+    where.userId = userId;
+  }
+  const list = await Appointment.find(where).sort({ createdAt: -1 }).lean();
   res.json(list);
 });
 

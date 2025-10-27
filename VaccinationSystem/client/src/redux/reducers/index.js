@@ -1,10 +1,14 @@
 import { combineReducers } from "redux";
 import { hospitalListReducer, hospitalVaccinesReducer } from "./hospitalReducers";
 import { appointmentCreateReducer, appointmentListReducer } from "./appointmentReducers";
+import { userListReducer, currentUserReducer } from "./userReducers";
+
 
 export default combineReducers({
   hospitalList:      hospitalListReducer,
   hospitalVaccines:  hospitalVaccinesReducer,
   appointmentCreate: appointmentCreateReducer,
   appointmentList:   appointmentListReducer,
+  users:             userListReducer,
+  currentUser:       currentUserReducer,
 });

@@ -1,8 +1,10 @@
+// import mongoose from "mongoose";
 const { Schema, model, Types } = require("mongoose");
 
 const AppointmentSchema = new Schema(
   {
-    userId: Types.ObjectId,                // 先不做用户系统，可留空
+    // userId: Types.ObjectId,                // 先不做用户系统，可留空
+    userId: { type: Types.ObjectId,ref: "User", required: false }, // 做用户系统了，可以为null
     hospitalId: { type: Types.ObjectId, ref: "Hospital", required: true },
     vaccineId:  { type: Types.ObjectId, ref: "Vaccine",  required: true },
     scheduledAt: { type: Date, required: true },

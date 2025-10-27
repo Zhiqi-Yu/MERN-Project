@@ -5,6 +5,14 @@ import HospitalDetailPage from "./components/pages/HospitalDetailPage.jsx";
 import BookingPage from "./components/pages/BookingPage.jsx";
 import SchedulePage from "./components/pages/SchedulePage.jsx";
 
+import AdminRoute from "./components/ui/AdminRoute.jsx";
+import UserSwitcher from "./components/ui/UserSwitcher.jsx";
+
+
+function AdminDashboard() {
+  return <h2>Admin Dashboard (coming next: Inventory Management / Shelves / Reports)</h2>;
+}
+
 export default function App(){
   return (
     <>
@@ -13,6 +21,7 @@ export default function App(){
         <Link to="/my/schedule">My Schedule</Link>
         <Link to="/reports">Reports</Link>
         <Link to="/admin">Admin</Link>
+        <UserSwitcher />
       </nav>
       <main style={{padding:16}}>
         <Routes>
@@ -21,6 +30,14 @@ export default function App(){
           <Route path="/hospital/:id" element={<HospitalDetailPage />} />
           <Route path="/book/:hospitalId/:vaccineId" element={<BookingPage />} />
           <Route path="/my/schedule" element={<SchedulePage />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
         </Routes>
       </main>
     </>

@@ -12,6 +12,7 @@ app.get("/api/health", (_req,res)=>res.json({ok:true}));
 app.use("/api/hospitals", require("./routes/hospitals"));
 app.use("/api/vaccines", require("./routes/vaccines"));
 app.use("/api/appointments", require("./routes/appointments"));
+app.use("/api/users", require("./routes/users"));
 
 const PORT = process.env.PORT || 9002;
 mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/vaccination")
