@@ -42,45 +42,47 @@ export default function AdminDashboard() {
     <div>
       <h2>Admin • Inventory</h2>
 
-      <h3>Add vaccines</h3>
-      <form onSubmit={onCreate} style={{display:"grid", gridTemplateColumns:"minmax(260px,1fr) minmax(260px,1fr) 160px auto", gap:8, maxWidth:980}}>
-        
-        {/* hospital dropdown menu */}
-        <select value={form.hospitalId}
-                onChange={e=>setForm({...form, hospitalId:e.target.value})}>
-          <option value="">Select hospital…</option>
-          {hospitalsMini.map(h => (
-            <option key={h._id} value={h._id}>{h.name} ({h.city})</option>
-          ))}
-        </select>
+      <h2 className="h2">Add vaccines</h2>
+      <div className="card mb-10">
+        <form onSubmit={onCreate} style={{display:"grid", gridTemplateColumns:"minmax(260px,1fr) minmax(260px,1fr) 160px auto", gap:8, maxWidth:980}}>
+            
+            {/* hospital dropdown menu */}
+            <select value={form.hospitalId}
+                    onChange={e=>setForm({...form, hospitalId:e.target.value})}>
+            <option value="">Select hospital…</option>
+            {hospitalsMini.map(h => (
+                <option key={h._id} value={h._id}>{h.name} ({h.city})</option>
+            ))}
+            </select>
 
-        {/* vaccine dropdown menu */}
-        <select value={form.vaccineId}
-                onChange={e=>setForm({...form, vaccineId:e.target.value})}>
-          <option value="">Select vaccine…</option>
-          {vaccinesMini.map(v => (
-            <option key={v._id} value={v._id}>{v.name} · {v.type} (${v.price})</option>
-          ))}
-        </select>
+            {/* vaccine dropdown menu */}
+            <select value={form.vaccineId}
+                    onChange={e=>setForm({...form, vaccineId:e.target.value})}>
+            <option value="">Select vaccine…</option>
+            {vaccinesMini.map(v => (
+                <option key={v._id} value={v._id}>{v.name} · {v.type} (${v.price})</option>
+            ))}
+            </select>
 
-        {/* stock */}
-        <input type="number" min="0" placeholder="Add stock"
-               value={form.stock}
-               onChange={e=>setForm({...form, stock:e.target.value})} />
+            {/* stock */}
+            <input type="number" min="0" placeholder="Add stock"
+                value={form.stock}
+                onChange={e=>setForm({...form, stock:e.target.value})} />
 
-        <button className="btn" type="submit" disabled={saving}>add</button>
-        {/* price */}
-        {/* <input type="number" placeholder="price override (if any)"
-               value={form.chargeOverride}
-               onChange={e=>setForm({...form, chargeOverride:e.target.value})} />
+            <button className="btn" type="submit" disabled={saving}>add</button>
+            {/* price */}
+            {/* <input type="number" placeholder="price override (if any)"
+                value={form.chargeOverride}
+                onChange={e=>setForm({...form, chargeOverride:e.target.value})} />
 
-        <button className="btn" type="submit" disabled={saving}>Create</button> */}
-      </form>
+            <button className="btn" type="submit" disabled={saving}>Create</button> */}
+        </form>
+      </div>
 
-      <h3 style={{marginTop:20}}>Current vaccines</h3>
-      {loading && <p>Loading…</p>}
+      <h3 className="h2">Current vaccines</h3>
+      {loading && <p className="subtle">Loading…</p>}
       {error && <p style={{color:"red"}}>{error}</p>}
-      <table style={{borderCollapse:"collapse", width:"100%", maxWidth:900}}>
+      <table className="table" style={{maxWidth:980}}>
         <thead>
             <tr>
                 <th align="left">hospital</th>
@@ -95,15 +97,15 @@ export default function AdminDashboard() {
             <tbody>
             {items.map(row => (
                 <tr key={row._id}>
-                <td>{row.hospitalName} <span style={{opacity:.6}}>({row.city})</span></td>
-                <td>{row.vaccineName} <span style={{opacity:.6}}>· {row.vaccineType}</span></td>
+                <td>{row.hospitalName} <span className="subtle">({row.city})</span></td>
+                <td>{row.vaccineName} <span className="subtle">· {row.vaccineType}</span></td>
                 <td align="right">
-                    <input style={{width:90}} type="number" defaultValue={row.stock ?? 0}
+                    <input className="input" style={{width:100}} type="number" defaultValue={row.stock ?? 0}
                         onBlur={e=>onPatch(row, "stock", Number(e.target.value))}/>
                 </td>
                 <td align="right">${row.basePrice ?? 0}</td>
                 <td align="right">
-                    <input style={{width:120}} type="number" placeholder="leave empty = base"
+                    <input className="input" style={{width:140}} type="number" placeholder="leave empty = base"
                         defaultValue={row.chargeOverride ?? ""}
                         onBlur={e=>{
                             const v = e.target.value;

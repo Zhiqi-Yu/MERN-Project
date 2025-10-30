@@ -1,5 +1,5 @@
 import {
-  HOSPITAL_LIST_REQUEST, HOSPITAL_LIST_SUCCESS, HOSPITAL_LIST_FAIL,
+  HOSPITAL_LIST_REQUEST, HOSPITAL_LIST_SUCCESS, HOSPITAL_LIST_FAIL, HOSPITAL_LIST_CLEAR,
   HOSPITAL_VACCINES_REQUEST, HOSPITAL_VACCINES_SUCCESS, HOSPITAL_VACCINES_FAIL
 } from "../constants/hospitalConstants";
 
@@ -43,3 +43,5 @@ export const listHospitalVaccines = (hospitalId) => async (dispatch) => {
     dispatch({ type: HOSPITAL_VACCINES_FAIL, payload: err.message || "Error" });
   }
 };
+
+export const clearHospitalList = () => ({ type: HOSPITAL_LIST_CLEAR });

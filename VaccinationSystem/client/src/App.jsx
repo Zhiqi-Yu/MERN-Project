@@ -19,14 +19,16 @@ import AdminDashboard from "./components/pages/AdminDashboard.jsx";
 export default function App(){
   return (
     <>
-      <nav style={{display:"flex", gap:12, padding:12, borderBottom:"1px solid #eee"}}>
-        <Link to="/search">Search</Link>
-        <Link to="/my/schedule">My Schedule</Link>
-        <Link to="/reports">Reports</Link>
-        <Link to="/admin">Admin</Link>
-        <UserSwitcher />
+      <nav className="navbar">
+        <div className="navbar-inner">
+          <Link to="/search">Search</Link>
+          <Link to="/my/schedule">My Schedule</Link>
+          <Link to="/reports">Reports</Link>
+          <Link to="/admin">Admin</Link>
+          <UserSwitcher />
+        </div>
       </nav>
-      <main style={{padding:16}}>
+      <main className="container">
         <Routes>
           <Route path="/" element={<Navigate to="/search" />} />
           <Route path="/search" element={<SearchPage />} />

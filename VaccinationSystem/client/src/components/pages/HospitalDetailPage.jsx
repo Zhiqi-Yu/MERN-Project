@@ -18,31 +18,36 @@ export default function HospitalDetailPage() {
 
   return (
     <div>
-      <h2>Hospital Detail{hospital ? ` — ${hospital.name}` : ""}</h2>
-      {loading && <p>Loading...</p>}
-      {error && <p style={{color:"red"}}>{String(error)}</p>}
+      <h1 className="h1">Hospital Detail{hospital ? ` — ${hospital.name}` : ""}</h1>
+      {loading && <p className="subtle">Loading...</p>}
+      {error && <p style={{color:"salmon"}}>{String(error)}</p>}
 
-      <ul>
-        {items.map(x => {
-          const disabled = !x.stock || x.stock <= 0;
-          return (
-            <li key={x.id || (x.vaccine && x.vaccine.id)}>
-              {x.vaccine?.name} · {x.vaccine?.type} · doses:{x.vaccine?.dosesRequired}
-              · stock:{x.stock ?? 0} · price:${x.price}
-              <Link
-                className={`btn ${disabled ? "btn--disabled" : ""}`}
-                to={`/book/${id}/${x.vaccine?.id}`}
-                // 把名字透传过去，Booking 页就不用再查一次
-                state={{ hospitalName: hospital?.name, vaccineName: x.vaccine?.name }}
-                onClick={(e) => { if (disabled) e.preventDefault(); }}
-              >
-                Book
-              </Link>
-            </li>
-          );
-        })}
-        {items.length === 0 && <li>The hospital currently has no vaccines on hand</li>}
-      </ul>
+      <div className="card">
+        <ul style={{paddingLeft:18, margin:0}}>
+          {items.map(x => {
+            const disabled = !x.stock || x.stock <= 0;
+            return (
+              <li key={x.id || (x.vaccine && x.vaccine.id)} style={{margin:'10px 0'}}>
+                <b>{x.vaccine?.name}</b> <span className="subtle">· {x.vaccine?.type}</span>
+                <span className="pill" style={{marginLeft:8}}>
+                  {x.stock>0 ? `${x.stock} in stock` : 'Out of stock'}
+                </span>
+                <span className="subtle" style={{marginLeft:10}}>price: ${x.price}</span>
+                <Link
+                  className={`btn btn-primary${disabled ? ' btn--disabled' : ''}`}
+                  style={{marginLeft:12}}
+                  to={`/book/${id}/${x.vaccine?.id}`}
+                  state={{ hospitalName: hospital?.name, vaccineName: x.vaccine?.name }}
+                  onClick={(e)=>{ if (disabled) e.preventDefault(); }}
+                >
+                  Book
+                </Link>
+              </li>
+            );
+          })}
+          {items.length === 0 && <li className="subtle">No vaccines on hand.</li>}
+        </ul>
+      </div>
     </div>
   );
 }
