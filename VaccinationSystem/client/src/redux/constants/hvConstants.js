@@ -1,0 +1,11 @@
+export const HV_LIST_REQUEST  = "HV_LIST_REQUEST";
+export const HV_LIST_SUCCESS  = "HV_LIST_SUCCESS";
+export const HV_LIST_FAIL     = "HV_LIST_FAIL";
+
+export const HV_CREATE_REQUEST = "HV_CREATE_REQUEST";
+export const HV_CREATE_SUCCESS = "HV_CREATE_SUCCESS";
+export const HV_CREATE_FAIL    = "HV_CREATE_FAIL";
+
+export const HV_UPDATE_REQUEST = "HV_UPDATE_REQUEST";
+export const HV_UPDATE_SUCCESS = "HV_UPDATE_SUCCESS";
+export const HV_UPDATE_FAIL    = "HV_UPDATE_FAIL";

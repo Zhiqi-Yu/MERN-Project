@@ -8,10 +8,13 @@ import SchedulePage from "./components/pages/SchedulePage.jsx";
 import AdminRoute from "./components/ui/AdminRoute.jsx";
 import UserSwitcher from "./components/ui/UserSwitcher.jsx";
 
+import AdminDashboard from "./components/pages/AdminDashboard.jsx";
 
-function AdminDashboard() {
-  return <h2>Admin Dashboard (coming next: Inventory Management / Shelves / Reports)</h2>;
-}
+
+// now we have the AdminDashboard page
+// function AdminDashboard() { 
+//   return <h2>Admin Dashboard (coming next: Inventory Management / Shelves / Reports)</h2>;
+// }
 
 export default function App(){
   return (

@@ -18,6 +18,16 @@ router.get("/", async (req, res) => {
   const list = await Hospital.find(where).sort({ name: 1 }).lean();
   res.json(list);
 });
+
+// 精简：只返回 id + name + city，用于下拉
+router.get("/mini", async (_req, res) => {
+  const list = await mongoose.connection
+    .collection("hospitals")
+    .aggregate([{ $project: { _id: 1, name: 1, city: 1 } }, { $sort: { name: 1 } }])
+    .toArray();
+  res.json(list);
+});
+
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   if (!mongoose.isValidObjectId(id)) return res.status(400).json({ error: "Invalid hospital id" });

@@ -2,6 +2,8 @@ import { combineReducers } from "redux";
 import { hospitalListReducer, hospitalVaccinesReducer } from "./hospitalReducers";
 import { appointmentCreateReducer, appointmentListReducer } from "./appointmentReducers";
 import { userListReducer, currentUserReducer } from "./userReducers";
+import { hvListReducer, hvMutateReducer } from "./hvReducers";
+
 
 
 export default combineReducers({
@@ -11,4 +13,6 @@ export default combineReducers({
   appointmentList:   appointmentListReducer,
   users:             userListReducer,
   currentUser:       currentUserReducer,
+  hvList:            hvListReducer,
+  hvMutate:          hvMutateReducer,
 });
