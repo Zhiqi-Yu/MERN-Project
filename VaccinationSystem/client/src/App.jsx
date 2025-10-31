@@ -12,7 +12,8 @@ import AdminDashboard from "./components/pages/AdminDashboard.jsx";
 
 import ReportsPage from "./components/pages/ReportsPage.jsx";
 import TickerBanner from "./components/ui/TickerBanner.jsx";
-
+import PayPage from "./components/pages/PayPage.jsx";
+import MobilePayConfirm from "./components/pages/MobilePayConfirm.jsx";
 
 // now we have the AdminDashboard page
 // function AdminDashboard() { 
@@ -32,14 +33,7 @@ export default function App(){
         </div>
       </nav>
 
-      <TickerBanner messages={[
-        // "Flu shots are in stock — book today.",
-        // "Please arrive 10 minutes early to verify information.",
-        // "COVID-19 updated vaccines available next week."
-        "1111111111111111111111111111111111111",
-        "2222222222222222222222222222222222222222222222",
-        "33333333333333333333333333333333333333333333333333333"
-      ]} />
+      <TickerBanner/>
       
       <main className="container">
         <Routes>
@@ -57,6 +51,8 @@ export default function App(){
             }
           />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/pay/:paymentId" element={<PayPage />} />
+          <Route path="/pay/confirm/:paymentId" element={<MobilePayConfirm />} />
         </Routes>
       </main>
     </>

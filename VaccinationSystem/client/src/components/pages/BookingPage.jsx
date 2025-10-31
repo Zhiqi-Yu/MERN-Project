@@ -74,15 +74,62 @@ export default function BookingPage(){
 
   const { loading, error } = useSelector(s => s.appointmentCreate || {});
 
+  // const onConfirm = async () => {
+  //   if (!selected) return;
+  //   const iso = selected.toISOString(); // 直接用本地时区转 ISO
+  //   await dispatch(createAppointment({
+  //     hospitalId, vaccineId, scheduledAt: iso,
+  //     ...(currentUserId ? { userId: currentUserId } : {})
+  //   }));
+  //   nav("/my/schedule");
+  // };
+
   const onConfirm = async () => {
     if (!selected) return;
-    const iso = selected.toISOString(); // 直接用本地时区转 ISO
-    await dispatch(createAppointment({
-      hospitalId, vaccineId, scheduledAt: iso,
-      ...(currentUserId ? { userId: currentUserId } : {})
-    }));
-    nav("/my/schedule");
+
+    // —— 1) 创建 Pending 预约
+    const r1 = await fetch("/api/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        hospitalId,
+        vaccineId,
+        scheduledAt: selected.toISOString(),
+        status: "Pending",
+        ...(currentUserId ? { userId: currentUserId } : {})
+      }),
+    });
+    if (!r1.ok) { alert("Create appointment failed"); return; }
+    const appt = await r1.json();
+
+    // —— 2) 查询价钱：/api/hospital-vaccines?hospitalId=&vaccineId=
+    let amount = 0;
+    try {
+      const url = `/api/hospital-vaccines?` +
+        `hospitalId=${encodeURIComponent(hospitalId)}&vaccineId=${encodeURIComponent(vaccineId)}`;
+      const rPrice = await fetch(url);
+      if (rPrice.ok) {
+        const arr = await rPrice.json();           // 期待数组
+        const hv  = Array.isArray(arr) ? arr[0] : null;
+        const base = hv?.basePrice ?? hv?.price ?? 0;
+        amount = Number(hv?.finalPrice ?? hv?.chargeOverride ?? base) || 0;
+      }
+    } catch (e) { console.warn("price fetch fail:", e); }
+
+    // —— 3) 创建支付单（带上真实 amount）
+    const r2 = await fetch("/api/payments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ appointmentId: appt._id, amount })
+    });
+    if (!r2.ok) { alert("Create payment failed"); return; }
+    const pay = await r2.json();
+
+    // —— 4) 跳转到支付页
+    nav(`/pay/${pay._id}`);
   };
+
+
 
   return (
     <div>
