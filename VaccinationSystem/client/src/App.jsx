@@ -15,6 +15,8 @@ import TickerBanner from "./components/ui/TickerBanner.jsx";
 import PayPage from "./components/pages/PayPage.jsx";
 import MobilePayConfirm from "./components/pages/MobilePayConfirm.jsx";
 
+import CheckDenominations from "./components/pages/CheckDenominations.jsx";
+
 // now we have the AdminDashboard page
 // function AdminDashboard() { 
 //   return <h2>Admin Dashboard (coming next: Inventory Management / Shelves / Reports)</h2>;
@@ -25,6 +27,7 @@ export default function App(){
     <>
       <nav className="navbar">
         <div className="navbar-inner">
+          <Link to="/atm">ATM</Link>
           <Link to="/search">Search</Link>
           <Link to="/my/schedule">My Schedule</Link>
           <Link to="/reports">Reports</Link>
@@ -53,6 +56,7 @@ export default function App(){
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/pay/:paymentId" element={<PayPage />} />
           <Route path="/pay/confirm/:paymentId" element={<MobilePayConfirm />} />
+          <Route path="/atm" element={<CheckDenominations />} />
         </Routes>
       </main>
     </>
