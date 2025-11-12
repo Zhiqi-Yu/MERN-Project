@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route, Link, Navigate } from "react-router-dom";
 import SearchPage from "./components/pages/SearchPage.jsx";
 import HospitalDetailPage from "./components/pages/HospitalDetailPage.jsx";
@@ -17,6 +17,16 @@ import MobilePayConfirm from "./components/pages/MobilePayConfirm.jsx";
 
 import CheckDenominations from "./components/pages/CheckDenominations.jsx";
 
+// import Hooks from "./components/hooks/Hooks.jsx"
+// const Hooks = lazy(() => import("./components/hooks/Hooks.jsx"));
+const Hooks = lazy(() =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      import("./components/hooks/Hooks.jsx").then(module => resolve(module));
+    }, 2000); // 
+  })
+);
+
 // now we have the AdminDashboard page
 // function AdminDashboard() { 
 //   return <h2>Admin Dashboard (coming next: Inventory Management / Shelves / Reports)</h2>;
@@ -27,6 +37,7 @@ export default function App(){
     <>
       <nav className="navbar">
         <div className="navbar-inner">
+          <Link to="/hooks">HOOKS</Link>
           <Link to="/atm">ATM</Link>
           <Link to="/search">Search</Link>
           <Link to="/my/schedule">My Schedule</Link>
@@ -57,6 +68,11 @@ export default function App(){
           <Route path="/pay/:paymentId" element={<PayPage />} />
           <Route path="/pay/confirm/:paymentId" element={<MobilePayConfirm />} />
           <Route path="/atm" element={<CheckDenominations />} />
+          <Route path="/hooks" element={
+            <Suspense fallback={<div style={{padding:16}}>Loading Hooks…</div>}>
+              <Hooks />
+            </Suspense>
+          }/>
         </Routes>
       </main>
     </>
