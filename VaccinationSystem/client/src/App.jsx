@@ -17,6 +17,9 @@ import MobilePayConfirm from "./components/pages/MobilePayConfirm.jsx";
 
 import CheckDenominations from "./components/pages/CheckDenominations.jsx";
 
+import GitHubLogin from "./components/ui/GitHubLogin.jsx";
+import OAuthDone from "./components/ui/OAuthDone";
+
 // import Hooks from "./components/hooks/Hooks.jsx"
 // const Hooks = lazy(() => import("./components/hooks/Hooks.jsx"));
 const Hooks = lazy(() =>
@@ -43,6 +46,7 @@ export default function App(){
           <Link to="/my/schedule">My Schedule</Link>
           <Link to="/reports">Reports</Link>
           <Link to="/admin">Admin</Link>
+          <Link to="/github">Github</Link>
           <UserSwitcher />
         </div>
       </nav>
@@ -73,6 +77,8 @@ export default function App(){
               <Hooks />
             </Suspense>
           }/>
+          <Route path="/github" element={<GitHubLogin />}/>
+          <Route path="/oauth/done" element={<OAuthDone />}/>
         </Routes>
       </main>
     </>
